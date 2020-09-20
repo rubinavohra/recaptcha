@@ -39,7 +39,7 @@ public class EmailTest {
     }
 
     @Test
-    public void emailTest() throws Exception  {
+    public void emailTest_Success() throws Exception  {
         System.out.println(" ============== Here in test case ================"+mimeMessage);
         System.out.println(" ============== Here in test case javaMailSender================"+javaMailSender);
         System.out.println(" ============== Here in test case emailService================"+emailService);
@@ -50,11 +50,23 @@ public class EmailTest {
         
         //boolean isSent = emailService.sendEmail();
         
-        Assertions.assertDoesNotThrow(()-> emailService.sendEmail()); // Assert whether email is sent without any exception
+        Assertions.assertDoesNotThrow(()-> emailService.sendEmail("")); // Assert whether email is sent without any exception
         Assertions.assertNotNull(mimeMessage);
 		Assertions.assertEquals("subject", mimeMessage.getSubject()); //This subject is same as mocked content (without prefix)
 		Assertions.assertEquals("to@domain.com", mimeMessage.getRecipients(RecipientType.TO)[0].toString());
 		//System.out.println(" ============== Here in test case ================"+emailService);
+    }
+    
+    @Test
+    public void emailTest_Failure() throws Exception  {
+        System.out.println(" ============== Here in second test case javaMailSender================"+javaMailSender);
+        System.out.println(" ============== Here in second test case emailService================"+emailService);
+        
+        
+        Mockito.doThrow(new MessagingException()).when(emailService).sendEmail("");
+        
+        Assertions.assertThrows(Exception.class, ()-> emailService.sendEmail(""));
+        
     }
     
     private MimeMessage createMimeMessage() throws MessagingException {

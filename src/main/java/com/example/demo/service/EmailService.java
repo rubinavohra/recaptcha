@@ -19,10 +19,11 @@ public class EmailService  {
 
 
     
-    public void sendEmail() throws MessagingException {
+    public void sendEmail(String buildEmailForm) throws MessagingException {
     	
     	//boolean sentStatus = false;
     	try {
+    	System.out.println("Here in service");
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setFrom(NOREPLY_ADDRESS);
@@ -31,9 +32,10 @@ public class EmailService  {
         helper.setText("Actual content here ..........", true);
         //helper.addInline("attachment.png", resourceFile);
         emailSender.send(message);
+        
         //sentStatus = true;
     	} catch (Exception e) {
-    		//sentStatus = false;
+    		throw e;
 		}
     	//return sentStatus;
     }
