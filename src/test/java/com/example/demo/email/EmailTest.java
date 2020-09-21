@@ -11,8 +11,12 @@ import javax.mail.internet.MimeMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -20,21 +24,29 @@ import static org.mockito.Mockito.*;
 
 import com.example.demo.service.EmailService;
 
+@ExtendWith(MockitoExtension.class)
 public class EmailTest {
 
-	@InjectMocks
-    private EmailService emailService;
+	private EmailService emailService;
 
-    @InjectMocks
+    @Mock
 	private JavaMailSender javaMailSender;
 
+    @Mock
     private MimeMessage mimeMessage;
+    
+    @Mock
+    private MimeMessageHelper mimeMessageHelper;
 
     @Before
     public void before() throws Exception {
+    	MockitoAnnotations.initMocks(this);
         mimeMessage = new MimeMessage((Session)null);
-        javaMailSender = Mockito.mock(JavaMailSender.class);
-        emailService = Mockito.mock(EmailService.class);
+        //mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+        
+        //javaMailSender = Mockito.mock(JavaMailSender.class);
+        //mimeMessageHelper = Mockito.mock(MimeMessageHelper.class);
+        emailService = new EmailService();
         
     }
 
@@ -47,9 +59,7 @@ public class EmailTest {
         
         mimeMessage = createMimeMessage();
         when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
-        
-        //boolean isSent = emailService.sendEmail();
-        
+       
         Assertions.assertDoesNotThrow(()-> emailService.sendEmail("")); // Assert whether email is sent without any exception
         Assertions.assertNotNull(mimeMessage);
 		Assertions.assertEquals("subject", mimeMessage.getSubject()); //This subject is same as mocked content (without prefix)
@@ -61,12 +71,14 @@ public class EmailTest {
     public void emailTest_Failure() throws Exception  {
         System.out.println(" ============== Here in second test case javaMailSender================"+javaMailSender);
         System.out.println(" ============== Here in second test case emailService================"+emailService);
+        System.out.println(" ============== Here in second test case MimeMessageHelper================"+mimeMessageHelper);
         
+       
         
-        Mockito.doThrow(new MessagingException()).when(emailService).sendEmail("");
+        doThrow(new MessagingException("Error")).when(mimeMessageHelper).setText("123");
+        //Mockito.doThrow(new Exception()).when(javaMailSender).createMimeMessage();
         
         Assertions.assertThrows(Exception.class, ()-> emailService.sendEmail(""));
-        
     }
     
     private MimeMessage createMimeMessage() throws MessagingException {

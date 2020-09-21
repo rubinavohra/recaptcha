@@ -19,24 +19,27 @@ public class EmailService  {
 
 
     
-    public void sendEmail(String buildEmailForm) throws MessagingException {
+    public void sendEmail(String buildEmailForm)  {
     	
     	//boolean sentStatus = false;
+    	MimeMessage message = emailSender.createMimeMessage();
     	try {
     	System.out.println("Here in service");
-        MimeMessage message = emailSender.createMimeMessage();
+       
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setFrom(NOREPLY_ADDRESS);
         helper.setTo("vohra.rubina@gmail.com");
         helper.setSubject("WITH PREFIX" + " TEST ");
         helper.setText("Actual content here ..........", true);
         //helper.addInline("attachment.png", resourceFile);
-        emailSender.send(message);
+        
         
         //sentStatus = true;
     	} catch (Exception e) {
-    		throw e;
+    		e.printStackTrace();
+    		//throw e;
 		}
+    	emailSender.send(message);
     	//return sentStatus;
     }
    
