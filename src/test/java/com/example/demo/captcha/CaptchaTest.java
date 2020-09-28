@@ -71,9 +71,7 @@ public class CaptchaTest {
     @Test
     public void testValidateCaptcha_success() throws Exception  {
         
-        MultiValueMap<String, String> requeMap = new LinkedMultiValueMap<>();
-    	requeMap.add("secret", "testsecret");
-    	//when(restTemplateBuilder./*setConnectTimeout(Duration.ofSeconds(3)).setReadTimeout(Duration.ofSeconds(2)).*/build()).thenReturn(restTemplate);
+        //when(restTemplateBuilder./*setConnectTimeout(Duration.ofSeconds(3)).setReadTimeout(Duration.ofSeconds(2)).*/build()).thenReturn(restTemplate);
     	 // mockito mock
     	when(restTemplate.postForObject(ArgumentMatchers.eq(GOOGLE_RECAPTCH_ENDPOINT),
                 ArgumentMatchers.any(Map.class), ArgumentMatchers.eq(RecaptchaResponse.class)))
@@ -91,11 +89,7 @@ public class CaptchaTest {
     @Test
     public void testValidateCaptcha_failure() throws Exception  {
         
-        MultiValueMap<String, String> requeMap = new LinkedMultiValueMap<>();
-    	requeMap.add("secret", "testsecret");
-    	//when(restTemplateBuilder./*setConnectTimeout(Duration.ofSeconds(3)).setReadTimeout(Duration.ofSeconds(2)).*/build()).thenReturn(restTemplate);
-    	 // mockito mock
-    	when(restTemplate.postForObject(ArgumentMatchers.eq(GOOGLE_RECAPTCH_ENDPOINT),
+        when(restTemplate.postForObject(ArgumentMatchers.eq(GOOGLE_RECAPTCH_ENDPOINT),
                 ArgumentMatchers.any(Map.class), ArgumentMatchers.eq(RecaptchaResponse.class)))
         .thenThrow(new RestClientException("Error while calling validate Recaptcha service"));
 
