@@ -10,9 +10,9 @@ public class DemoApplication {
         Requestdto requestdto = prepareRequest();
         System.out.println(" Search Param >> "+buildSearchCondition(requestdto));
 
-        SearchCustomer searchBy = SeachCommandFactory.getSearchCommand(buildSearchCondition(requestdto))
+        SearchCustomer command = SeachCommandFactory.getSearchCommand(buildSearchCondition(requestdto))
                 .orElseThrow(() -> new IllegalArgumentException("Wrong condition"));
-        searchBy.execute();
+        command.execute();
 
         System.out.println(" Ends here ");
 
