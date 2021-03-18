@@ -16,6 +16,8 @@ public class DemoApplication {
 
         System.out.println(" Ends here ");
 
+
+
         // Demo invalid search parameter
        /* SearchCustomer searchBy2 = SeachCommandFactory.getSearchCommand("xxx")
                 .orElseThrow(() -> new IllegalArgumentException("Missing valid search parameter ...."));
